@@ -1,0 +1,93 @@
+<div class="container">
+  <h1>Reactive Form</h1>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <form [formGroup]="form">
+        <div formGroupName="userInfo">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              class="form-control"
+              formControlName="username"
+            />
+            <span
+              *ngIf="
+                getFormC('userInfo.username')?.invalid &&
+                getFormC('userInfo.username')?.touched
+              "
+            >
+              <ng-container *ngIf="getErrorsC('userInfo.username', 'required')"
+                >Campo Username obbligatorio</ng-container
+              >
+              <ng-container
+                *ngIf="getErrorsC('userInfo.username', 'usernameProibito')"
+                >Username non consentito</ng-container
+              >
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              formControlName="email"
+            />
+            <span
+              *ngIf="
+                getFormC('userInfo.email')?.invalid &&
+                getFormC('userInfo.email')?.touched
+              "
+            >
+              <ng-container *ngIf="getErrorsC('userInfo.email', 'required')"
+                >Campo Email obbligatorio</ng-container
+              >
+              <ng-container *ngIf="getErrorsC('userInfo.email', 'email')"
+                >Email non valida</ng-container
+              >
+            </span>
+          </div>
+          <div class="radio" *ngFor="let gender of genders">
+            <label for="">
+              <input
+                type="radio"
+                formControlName="genere"
+                id="genere"
+                [value]="gender"
+              />{{ gender }}
+            </label>
+          </div>
+          <div formArrayName="sports" class="mb-3">
+            <h3>My sports</h3>
+            <button
+              type="button"
+              class="btn btn-outline-success"
+              (click)="addSports()"
+            >
+              Add sport
+            </button>
+            <div
+              class="form-group mb-2"
+              *ngFor="let sport of getSportsC(); let i = index"
+            >
+              <input type="text" class="form-control" [formControlName]="i" />
+            </div>
+            <button
+              type="submit"
+              class="btn btn-warning"
+              [disabled]="form.invalid"
+              (click)="submit()"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
